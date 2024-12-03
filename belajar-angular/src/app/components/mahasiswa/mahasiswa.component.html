@@ -1,49 +1,23 @@
-<div class="container my-5">
-  <h2>Data Mahasiswa</h2>
+<div class="container mt-4">
+  <h2>Daftar mahasiswa</h2>
 
-  <div class="row mt-5">
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/150"
-          class="card-img-top"
-          alt="Image of Andi"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Andi</h5>
-          <p class="card-text"><strong>NPM:</strong> 123456</p>
-          <p class="card-text"><strong>Prodi:</strong> Sistem Informasi</p>
-          <p class="card-text"><strong>Status:</strong> Mahasiswa Aktif</p>
-        </div>
-      </div>
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/150"
-          class="card-img-top"
-          alt="Image of Budi"
-        />
+  </div>
+
+  <!-- Data mahasiswa -->
+  <div class="row" *ngIf="!isLoading">
+    <div class="col-md-4 mb-4" *ngFor="let item of mahasiswa">
+      <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Budi</h5>
-          <p class="card-text"><strong>NPM:</strong> 654321</p>
-          <p class="card-text"><strong>Prodi:</strong> Teknik Informatika</p>
-          <p class="card-text"><strong>Status:</strong> Mahasiswa Aktif</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <img
-          src="https://via.placeholder.com/150"
-          class="card-img-top"
-          alt="Image of Charlie"
-        />
-        <div class="card-body">
-          <h5 class="card-title">Charlie</h5>
-          <p class="card-text"><strong>NPM:</strong> 789012</p>
-          <p class="card-text"><strong>Prodi:</strong> Teknik Komputer</p>
-          <p class="card-text"><strong>Status:</strong> Mahasiswa Aktif</p>
+          <h5 class="card-title">{{ item.nama }}</h5>
+          <p class="card-text"><strong>NPM:</strong> {{ item.npm }}</p>
+          <p><strong>Jenis Kelamin:</strong>{{ item.jenis_kelamin }}</p>
+          <p><strong>Asal Sekolah:</strong>{{ item.asal_sekolah }}</p>
+          <p><strong>Prodi:</strong>{{ item.prodi_id.nama }}</p>
         </div>
       </div>
     </div>
