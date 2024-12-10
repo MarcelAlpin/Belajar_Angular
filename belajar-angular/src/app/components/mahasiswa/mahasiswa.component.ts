@@ -14,8 +14,8 @@ import * as bootstrap from 'bootstrap';
 export class MahasiswaComponent implements OnInit {
   mahasiswa: any[] = []; // Menyimpan data mahasiswa.
   prodi: any[] = []; // Menyimpan data program studi untuk dropdown.
-  apiMahasiswaUrl = 'https://crud-express-main.vercel.app/api/mahasiswa'; // URL API mahasiswa.
-  apiProdiUrl = 'https://crud-express-main.vercel.app/api/prodi'; // URL API program studi.
+  apiMahasiswaUrl = 'https://crud-express-seven.vercel.app/api/mahasiswa'; // URL API mahasiswa.
+  apiProdiUrl = 'https://crud-express-seven.vercel.app/api/prodi'; // URL API program studi.
   isLoading = true; // Indikator loading data dari API.
   mahasiswaForm: FormGroup; // Form group untuk formulir reaktif mahasiswa.
   isSubmitting = false; // Indikator proses pengiriman data.

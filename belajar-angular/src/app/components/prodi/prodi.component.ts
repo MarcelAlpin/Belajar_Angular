@@ -15,8 +15,8 @@ export class ProdiComponent implements OnInit {
   // Mendeklarasikan class komponen dengan implementasi OnInit untuk inisialisasi.
   prodi: any[] = []; // Menyimpan data program studi.
   fakultas: any[] = []; // Menyimpan data fakultas untuk dropdown.
-  apiProdiUrl = 'https://crud-express-main.vercel.app/api/prodi'; // URL API untuk mengambil dan menambahkan data prodi.
-  apiFakultasUrl = 'https://crud-express-main.vercel.app/api/fakultas'; // URL API untuk mengambil data fakultas.
+  apiProdiUrl = 'https://crud-express-seven.vercel.app/api/prodi'; // URL API untuk mengambil dan menambahkan data prodi.
+  apiFakultasUrl = 'https://crud-express-seven.vercel.app/api/fakultas'; // URL API untuk mengambil data fakultas.
   isLoading = true; // Indikator loading data dari API.
   prodiForm: FormGroup; // Form group untuk formulir reaktif prodi.
   isSubmitting = false; // Indikator proses pengiriman data.
@@ -72,21 +72,6 @@ export class ProdiComponent implements OnInit {
     });
   }
 
-  // Method untuk menghapus prodi
-  deleteProdi(_id: string): void {
-    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-      // Konfirmasi penghapusan
-      this.http.delete(`${this.apiProdiUrl}/${_id}`).subscribe({
-        next: () => {
-          console.log(`Prodi dengan ID ${_id} berhasil dihapus`);
-          this.getProdi(); // Refresh data prodi setelah penghapusan
-        },
-        error: (err) => {
-          console.error('Error menghapus prodi:', err); // Log error jika penghapusan gagal
-        },
-      });
-    }
-  }
   // Method untuk menambahkan prodi
   addProdi(): void {
     if (this.prodiForm.valid) {
@@ -137,6 +122,80 @@ export class ProdiComponent implements OnInit {
           this.isSubmitting = false; // Menonaktifkan indikator pengiriman.
         },
       });
+    }
+  }
+  // Method untuk menghapus prodi
+  deleteProdi(_id: string): void {
+    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+      // Konfirmasi penghapusan
+      this.http.delete(`${this.apiProdiUrl}/${_id}`).subscribe({
+        next: () => {
+          console.log(`Prodi dengan ID ${_id} berhasil dihapus`);
+          this.getProdi(); // Refresh data prodi setelah penghapusan
+        },
+        error: (err) => {
+          console.error('Error menghapus prodi:', err); // Log error jika penghapusan gagal
+        },
+      });
+    }
+  }
+  editProdiId: string | null = null; // ID prodi yang sedang diubah
+
+  // Method untuk mendapatkan data prodi berdasarkan ID
+  getProdiById(_id: string): void {
+    this.editProdiId = _id; // Menyimpan ID prodi yang dipilih
+    this.http.get(`${this.apiProdiUrl}/${_id}`).subscribe({
+      next: (data: any) => {
+        // Isi form dengan data yang diterima dari API
+        this.prodiForm.patchValue({
+          nama: data.nama,
+          singkatan: data.singkatan,
+          fakultas_id: data.fakultas_id,
+        });
+
+        // Buka modal edit
+        const modalElement = document.getElementById(
+          'editProdiModal'
+        ) as HTMLElement;
+        if (modalElement) {
+          const modalInstance =
+            bootstrap.Modal.getInstance(modalElement) ||
+            new bootstrap.Modal(modalElement);
+          modalInstance.show();
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching prodi data by ID:', err);
+      },
+    });
+  }
+
+  // Method untuk mengupdate data prodi
+  updateProdi(): void {
+    if (this.prodiForm.valid) {
+      this.isSubmitting = true;
+      this.http
+        .put(`${this.apiProdiUrl}/${this.editProdiId}`, this.prodiForm.value)
+        .subscribe({
+          next: (response) => {
+            console.log('Prodi berhasil diperbarui:', response);
+            this.getProdi(); // Refresh data prodi
+            this.isSubmitting = false;
+
+            // Tutup modal edit setelah data berhasil diupdate
+            const modalElement = document.getElementById(
+              'editProdiModal'
+            ) as HTMLElement;
+            if (modalElement) {
+              const modalInstance = bootstrap.Modal.getInstance(modalElement);
+              modalInstance?.hide();
+            }
+          },
+          error: (err) => {
+            console.error('Error updating prodi:', err);
+            this.isSubmitting = false;
+          },
+        });
     }
   }
 }

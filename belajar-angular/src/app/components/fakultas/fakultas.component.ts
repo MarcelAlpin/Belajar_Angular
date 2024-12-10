@@ -18,7 +18,7 @@ export class FakultasComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
 
-  apiUrl = 'https://crud-express-main.vercel.app/api/fakultas'; // URL API yang digunakan untuk mendapatkan data fakultas
+  apiUrl = 'https://crud-express-seven.vercel.app/api/fakultas'; // URL API yang digunakan untuk mendapatkan data fakultas
   isLoading = true; // Properti untuk status loading, digunakan untuk menunjukkan loader saat data sedang diambil
 
   fakultasForm: FormGroup; // Tambahkan untuk mengelola data formulir
