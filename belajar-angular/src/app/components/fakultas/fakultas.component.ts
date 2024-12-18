@@ -62,40 +62,44 @@ export class FakultasComponent implements OnInit {
   addFakultas(): void {
     if (this.fakultasForm.valid) {
       this.isSubmitting = true; // Set status submitting
-      this.http.post(this.apiUrl, this.fakultasForm.value).subscribe({
-        next: (response) => {
-          console.log('Data berhasil ditambahkan:', response);
-          this.getFakultas(); // Refresh data fakultas
-          this.fakultasForm.reset(); // Reset formulir
-          this.isSubmitting = false; // Reset status submitting
+      const token = localStorage.getItem('authToken');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.http
+        .post(this.apiUrl, this.fakultasForm.value, { headers })
+        .subscribe({
+          next: (response) => {
+            console.log('Data berhasil ditambahkan:', response);
+            this.getFakultas(); // Refresh data fakultas
+            this.fakultasForm.reset(); // Reset formulir
+            this.isSubmitting = false; // Reset status submitting
 
-          // Tutup modal setelah data berhasil ditambahkan
-          const modalElement = document.getElementById(
-            'tambahFakultasModal'
-          ) as HTMLElement;
-          if (modalElement) {
-            const modalInstance =
-              bootstrap.Modal.getInstance(modalElement) ||
-              new bootstrap.Modal(modalElement);
-            modalInstance.hide();
+            // Tutup modal setelah data berhasil ditambahkan
+            const modalElement = document.getElementById(
+              'tambahFakultasModal'
+            ) as HTMLElement;
+            if (modalElement) {
+              const modalInstance =
+                bootstrap.Modal.getInstance(modalElement) ||
+                new bootstrap.Modal(modalElement);
+              modalInstance.hide();
 
-            // Hapus elemen backdrop jika ada
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) {
-              backdrop.remove();
+              // Hapus elemen backdrop jika ada
+              const backdrop = document.querySelector('.modal-backdrop');
+              if (backdrop) {
+                backdrop.remove();
+              }
+
+              // Pulihkan scroll pada body
+              document.body.classList.remove('modal-open');
+              document.body.style.overflow = '';
+              document.body.style.paddingRight = '';
             }
-
-            // Pulihkan scroll pada body
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
-          }
-        },
-        error: (err) => {
-          console.error('Error menambahkan fakultas:', err);
-          this.isSubmitting = false;
-        },
-      });
+          },
+          error: (err) => {
+            console.error('Error menambahkan fakultas:', err);
+            this.isSubmitting = false;
+          },
+        });
     }
   }
 
@@ -134,8 +138,12 @@ export class FakultasComponent implements OnInit {
   updateFakultas(): void {
     if (this.fakultasForm.valid) {
       this.isSubmitting = true;
+      const token = localStorage.getItem('authToken');
+      const headers = { Authorization: `Bearer ${token}` };
       this.http
-        .put(`${this.apiUrl}/${this.editFakultasId}`, this.fakultasForm.value)
+        .put(`${this.apiUrl}/${this.editFakultasId}`, this.fakultasForm.value, {
+          headers,
+        })
         .subscribe({
           next: (response) => {
             console.log('Fakultas berhasil diperbarui:', response);
@@ -163,7 +171,9 @@ export class FakultasComponent implements OnInit {
   deleteFakultas(id: string): void {
     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
       // Konfirmasi Penghapusan
-      this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      const token = localStorage.getItem('authToken');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.http.delete(`${this.apiUrl}/${id}`, { headers }).subscribe({
         next: (response) => {
           console.log('Data berhasil dihapus:', response);
           this.getFakultas(); // Refresh data fakultas
