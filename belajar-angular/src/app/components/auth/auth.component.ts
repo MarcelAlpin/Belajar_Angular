@@ -18,9 +18,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-auth', // Selector untuk komponen ini yang digunakan di HTML
   templateUrl: './auth.component.html', // Template HTML yang terkait dengan komponen ini
-  standalone: true, // Menandakan bahwa komponen ini adalah komponen mandiri
   imports: [CommonModule, ReactiveFormsModule], // Mengimpor CommonModule dan ReactiveFormsModule agar bisa menggunakan fitur form dan direktif Angular standar
-  styleUrl: './auth.component.css', // Styling CSS untuk komponen ini
+  styleUrls: ['./auth.component.css'], // Styling CSS untuk komponen ini
 })
 export class AuthComponent {
   // Mendeklarasikan FormGroup untuk form login

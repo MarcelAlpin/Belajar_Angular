@@ -11,7 +11,7 @@ import { Router } from '@angular/router'; // Mengimpor Router
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  title = 'spa-angular';
+  title = 'Belajar Angular'; // Menyimpan judul aplikasi
 
   isLoggedIn: boolean = false; // Menyimpan status login
   constructor(private router: Router) {} // Menambahkan router pada konstruktor
